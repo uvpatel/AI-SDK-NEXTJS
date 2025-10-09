@@ -4,36 +4,25 @@ import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport } from 'ai';
 import { useState } from 'react';
 
-export default function Page() {
-
-  // In app/page.tsx, replace the models array:
-const models = [
-  { id: 'llama-3.1-8b-instant', name: 'Llama 3.1 8B Instant' },  // Recommended replacement
-  { id: 'llama-3.1-70b-versatile', name: 'Llama 3.1 70B Versatile' },
-  { id: 'mixtral-8x7b-32768', name: 'Mixtral 8x7B' },  // Still supported
-  
-];
-
+export default function Chat() {
   const { messages, sendMessage, status } = useChat({
-    transport: new DefaultChatTransport({
-      api: '/api/chat',
-    }),
+    transport: new DefaultChatTransport({ api: '/api/chat' }),
   });
   const [input, setInput] = useState('');
 
   return (
     <>
-      {messages.map(message => (
+      {messages.map((message) => (
         <div key={message.id}>
           {message.role === 'user' ? 'User: ' : 'AI: '}
           {message.parts.map((part, index) =>
-            part.type === 'text' ? <span key={index}>{part.text}</span> : null,
+            part.type === 'text' ? <span key={index}>{part.text}</span> : null
           )}
         </div>
       ))}
 
       <form
-        onSubmit={e => {
+        onSubmit={(e) => {
           e.preventDefault();
           if (input.trim()) {
             sendMessage({ text: input });
@@ -43,7 +32,7 @@ const models = [
       >
         <input
           value={input}
-          onChange={e => setInput(e.target.value)}
+          onChange={(e) => setInput(e.target.value)}
           disabled={status !== 'ready'}
           placeholder="Say something..."
         />
